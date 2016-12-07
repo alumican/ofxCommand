@@ -1,9 +1,9 @@
 #pragma once
 
 #include "ofMain.h"
-#include "command/Command.h"
+#include "Command.h"
 
-namespace command {
+namespace cmd {
 
 	template<class T>
 	class Var : public Command {
@@ -33,8 +33,8 @@ namespace command {
 		// ----------------------------------------
 
 	public:
-		Var(T* target, T value) {
-			this->target = target;
+		Var(T& target, T value) {
+			this->target = &target;
 			this->value = value;
 		};
 
@@ -68,7 +68,10 @@ namespace command {
 
 		virtual void interruptFunction(Command* command) {
 		};
-		
+
+		virtual void resetFunction(Command* command) {
+		}
+
 	private:
 	};
 	

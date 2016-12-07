@@ -1,9 +1,9 @@
 #pragma once
 
 #include "ofMain.h"
-#include "command/Command.h"
+#include "Command.h"
 
-namespace command {
+namespace cmd {
 
 	template<class T>
 	class Listen : public Command {
@@ -37,36 +37,39 @@ namespace command {
 		};
 
 		~Listen() {
-			ofRemoveListener(event, this, &Listen::_complete);
+			ofRemoveListener(*event, this, &Listen::_complete);
 			event = NULL;
+			ofLogVerbose() << "Bye Listen";
 		};
 
-		ofEvent<T>& getEvent() {
+		ofEvent<T>* getEvent() {
 			return event;
 		};
 
-		void setEvent(ofEvent<T>& event) {
+		void setEvent(ofEvent<T>* event) {
 			this->event = event;
 		};
-
-		void _complete(Command& command) {
-			ofRemoveListener(event, this, &Listen::_complete);
-			notifyComplete();
-		}
 
 
 	protected:
 		virtual void executeFunction(Command* command) {
-			ofAddListener(event, this, &Listen::_complete);
+			ofAddListener(*event, this, &Listen::_complete);
 		};
 
 		virtual void interruptFunction(Command* command) {
-			ofRemoveListener(event, this, &Listen::_complete);
+			ofRemoveListener(*event, this, &Listen::_complete);
 		};
-		
+
+		virtual void resetFunction(Command* command) {
+			interruptFunction(command);
+		}
+
 	private:
+		void _complete() {
+			ofRemoveListener(*event, this, &Listen::_complete);
+			notifyComplete();
+		}
 	};
-	
 }
 
 

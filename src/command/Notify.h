@@ -1,9 +1,9 @@
 #pragma once
 
 #include "ofMain.h"
-#include "command/Command.h"
+#include "Command.h"
 
-namespace command {
+namespace cmd {
 
 	template<class T>
 	class Notify : public Command {
@@ -66,6 +66,9 @@ namespace command {
 		};
 
 		virtual void interruptFunction(Command* command) {
+		};
+
+		virtual void resetFunction(Command* command) {
 		};
 
 	private:

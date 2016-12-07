@@ -1,9 +1,9 @@
 #pragma once
 
 #include "ofMain.h"
-#include "command/CommandList.h"
+#include "CommandList.h"
 
-namespace command {
+namespace cmd {
 
 	class Parallel : public CommandList {
 
@@ -38,17 +38,17 @@ namespace command {
 		virtual void insert(const vector<Command*>& commands);
 		int getCompleteCount();
 
-		void _complete(Command& command);
-
 		virtual void _notifyBreak();
 		virtual void _notifyReturn();
 
 	protected:
 		virtual void executeFunction(Command* command);
 		virtual void interruptFunction(Command* command);
+		virtual void resetFunction(Command* command);
 
 	private:
 		void next();
+		void currentCommandCompleteHandler(Command& command);
 	};
 }
 

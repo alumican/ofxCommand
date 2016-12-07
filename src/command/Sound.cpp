@@ -1,127 +1,108 @@
-#include "command/Sound.h"
+#include "Sound.h"
 
-using namespace command;
+namespace cmd {
 
-//--------------------------------------------------------------
-Sound::Sound(ofSoundPlayer* soundPlayer, bool waitForComplete, bool unloadOnComplete) {
-	this->soundPlayer = soundPlayer;
-	this->waitForComplete = waitForComplete;
-	this->unloadOnComplete = unloadOnComplete;
-}
-
-
-
-
-
-//--------------------------------------------------------------
-Sound::~Sound() {
-	if (soundPlayer != NULL) {
-		ofRemoveListener(ofEvents().update, this, &Sound::update);
-		soundPlayer->stop();
-		if (unloadOnComplete) {
-			soundPlayer->unload();
-		}
-		soundPlayer = NULL;
+	//--------------------------------------------------------------
+	Sound::Sound(ofSoundPlayer* soundPlayer, bool waitForComplete, bool unloadOnComplete) {
+		this->soundPlayer = soundPlayer;
+		this->waitForComplete = waitForComplete;
+		this->unloadOnComplete = unloadOnComplete;
 	}
-	ofLogVerbose() << "Bye Sound";
-}
+
+	//--------------------------------------------------------------
+	Sound::~Sound() {
+		if (soundPlayer != NULL) {
+			ofRemoveListener(ofEvents().update, this, &Sound::update);
+			soundPlayer->stop();
+			if (unloadOnComplete) {
+				soundPlayer->unload();
+			}
+			soundPlayer = NULL;
+		}
+		ofLogVerbose() << "Bye Sound";
+	}
 
 
 
 
 
-//--------------------------------------------------------------
-ofSoundPlayer* Sound::getSoundPlayer() {
-	return soundPlayer;
-}
+	//--------------------------------------------------------------
+	ofSoundPlayer* Sound::getSoundPlayer() {
+		return soundPlayer;
+	}
+
+	//--------------------------------------------------------------
+	void Sound::setSoundPlayer(ofSoundPlayer* soundPlayer) {
+		this->soundPlayer = soundPlayer;
+	}
+
+	//--------------------------------------------------------------
+	bool Sound::getWaitForComplete() {
+		return waitForComplete;
+	}
+
+	//--------------------------------------------------------------
+	void Sound::setWaitForComplete(bool value) {
+		this->waitForComplete = value;
+	}
+
+	//--------------------------------------------------------------
+	bool Sound::getUnloadOnComplete() {
+		return unloadOnComplete;
+	}
+
+	//--------------------------------------------------------------
+	void Sound::setUnloadOnComplete(bool value) {
+		this->unloadOnComplete = value;
+	}
 
 
 
 
 
-//--------------------------------------------------------------
-void Sound::setSoundPlayer(ofSoundPlayer* soundPlayer) {
-	this->soundPlayer = soundPlayer;
-}
+	//--------------------------------------------------------------
+	void Sound::executeFunction(Command* command) {
+		if (soundPlayer != NULL) {
+			soundPlayer->setPosition(0);
+			soundPlayer->play();
+			if (waitForComplete) {
+				prevPosition = 0;
+				ofAddListener(ofEvents().update, this, &Sound::update);
+			} else {
+				notifyComplete();
+			}
+		}
+	}
+
+	//--------------------------------------------------------------
+	void Sound::interruptFunction(Command* command) {
+		ofRemoveListener(ofEvents().update, this, &Sound::update);
+		if (soundPlayer != NULL) {
+			soundPlayer->stop();
+		}
+	}
+
+	//--------------------------------------------------------------
+	void Sound::resetFunction(Command* command) {
+		interruptFunction(command);
+		if (soundPlayer != NULL) {
+			soundPlayer->setPosition(0);
+		}
+	}
 
 
 
 
 
-//--------------------------------------------------------------
-bool Sound::getWaitForComplete() {
-	return waitForComplete;
-}
-
-
-
-
-
-//--------------------------------------------------------------
-void Sound::setWaitForComplete(bool value) {
-	this->waitForComplete = value;
-}
-
-
-
-
-
-//--------------------------------------------------------------
-bool Sound::getUnloadOnComplete() {
-	return unloadOnComplete;
-}
-
-
-
-
-
-//--------------------------------------------------------------
-void Sound::setUnloadOnComplete(bool value) {
-	this->unloadOnComplete = value;
-}
-
-
-
-
-
-//--------------------------------------------------------------
-void Sound::executeFunction(Command* command) {
-	if (soundPlayer != NULL) {
-		soundPlayer->setPosition(0);
-		soundPlayer->play();
-		if (waitForComplete) {
-			prevPosition = 0;
-			ofAddListener(ofEvents().update, this, &Sound::update);
-		} else {
+	//--------------------------------------------------------------
+	void Sound::update(ofEventArgs& event) {
+		float position = soundPlayer->getPosition();
+		if (prevPosition > 0 && position == 0) {
+			ofRemoveListener(ofEvents().update, this, &Sound::update);
 			notifyComplete();
 		}
+		prevPosition = position;
 	}
-}
-
-
-
-
-
-//--------------------------------------------------------------
-void Sound::interruptFunction(Command* command) {
-	ofRemoveListener(ofEvents().update, this, &Sound::update);
-	if (soundPlayer != NULL) {
-		soundPlayer->stop();
-	}
-}
-
-
-
-
-
-//--------------------------------------------------------------
-void Sound::update(ofEventArgs& event) {
-	float position = soundPlayer->getPosition();
-	if (prevPosition > 0 && position == 0) {
-		ofRemoveListener(ofEvents().update, this, &Sound::update);
-		notifyComplete();
-	}
-	prevPosition = position;
 }
 
 

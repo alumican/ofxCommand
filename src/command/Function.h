@@ -1,11 +1,11 @@
 #pragma once
 
+#include <functional>
 #include "ofMain.h"
-#include "command/Command.h"
+#include "Command.h"
 
-namespace command {
+namespace cmd {
 
-	template <class C, void (C::*M)()>
 	class Function : public Command {
 
 		// ----------------------------------------
@@ -19,8 +19,7 @@ namespace command {
 	protected:
 
 	private:
-		C* target;
-		ofEvent<void>* event;
+		function<void()> f;
 
 
 
@@ -33,66 +32,16 @@ namespace command {
 		// ----------------------------------------
 
 	public:
-		Function(C* target) {
-			this->target = target;
-			event = NULL;
-		}
+		Function(const function<void()>& f);
+		~Function();
 
-		Function(C* target, ofEvent<void>& event) {
-			this->target = target;
-			this->event = &event;
-		}
-
-		~Function() {
-			target = NULL;
-			if (event != NULL) {
-				ofRemoveListener(*event, this, &Function::_eventHandler);
-				event = NULL;
-			}
-			ofLogVerbose() << "Bye Function";
-		}
-
-		C* getTarget() {
-			return target;
-		}
-
-		void setTarget(const C* target) {
-			this->target = target;
-		}
-
-		ofEvent<void>& getEvent() {
-			return event;
-		};
-
-		void setEvent(ofEvent<void>& event) {
-			this->event = event;
-		};
-
-		void _eventHandler() {
-			if (event != NULL) {
-				ofRemoveListener(*event, this, &Function::_eventHandler);
-			}
-			notifyComplete();
-		}
+		function<void()> getFunction();
+		void setFunction(const function<void()>& f);
 
 	protected:
-		virtual void executeFunction(Command* command) {
-			if (event != NULL) {
-				ofAddListener(*event, this, &Function::_eventHandler);
-			}
-			if (target != NULL) {
-				(target->*M)();
-			}
-			if (event == NULL) {
-				notifyComplete();
-			}
-		}
-
-		virtual void interruptFunction(Command* command) {
-			if (event != NULL) {
-				ofRemoveListener(*event, this, &Function::_eventHandler);
-			}
-		}
+		virtual void executeFunction(Command* command);
+		virtual void interruptFunction(Command* command);
+		virtual void resetFunction(Command* command);
 
 	private:
 	};

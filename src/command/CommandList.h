@@ -1,9 +1,9 @@
 #pragma once
 
 #include "ofMain.h"
-#include "command/Command.h"
+#include "Command.h"
 
-namespace command {
+namespace cmd {
 
 	class CommandList : public Command {
 
@@ -37,7 +37,9 @@ namespace command {
 
 		CommandList* add(Command* command);
 		void add(const vector<Command*>& commands);
+		void insert(int index, Command* command);
 		void insert(int index, const vector<Command*>& commands);
+		void insert(Command* command);
 		virtual void insert(const vector<Command*>& commands);
 
 		Command* getCommand(int index);
@@ -49,6 +51,7 @@ namespace command {
 
 		virtual void executeFunction(Command* command);
 		virtual void interruptFunction(Command* command);
+		virtual void resetFunction(Command* command);
 
 	private:
 	};

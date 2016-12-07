@@ -1,9 +1,9 @@
 #pragma once
 
 #include "ofMain.h"
-#include "command/Command.h"
+#include "Command.h"
 
-namespace command {
+namespace cmd {
 
 	class Video : public Command {
 
@@ -48,6 +48,7 @@ namespace command {
 	protected:
 		virtual void executeFunction(Command* command);
 		virtual void interruptFunction(Command* command);
+		virtual void resetFunction(Command* command);
 
 	private:
 		void update(ofEventArgs& event);

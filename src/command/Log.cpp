@@ -1,75 +1,59 @@
-#include "command/Log.h"
+#include "Log.h"
 
-using namespace command;
+namespace cmd {
 
-//--------------------------------------------------------------
-Log::Log(const string& message, ofLogLevel level) {
-	this->message = message;
-	this->level = level;
-}
+	//--------------------------------------------------------------
+	Log::Log(const string& message, ofLogLevel level) {
+		this->message = message;
+		this->level = level;
+	}
 
-
-
-
-
-//--------------------------------------------------------------
-Log::~Log() {
-	ofLogVerbose() << "Bye Log";
-}
+	//--------------------------------------------------------------
+	Log::~Log() {
+		ofLogVerbose() << "Bye Log";
+	}
 
 
 
 
 
-//--------------------------------------------------------------
-const string& Log::getMessage() {
-	return message;
-}
+	//--------------------------------------------------------------
+	const string& Log::getMessage() {
+		return message;
+	}
+
+	//--------------------------------------------------------------
+	void Log::setMessage(const string& message) {
+		this->message = message;
+	}
+
+	//--------------------------------------------------------------
+	ofLogLevel Log::getLevel() {
+		return level;
+	}
+
+	//--------------------------------------------------------------
+	void Log::setLevel(ofLogLevel level) {
+		this->level = level;
+	}
 
 
 
 
 
-//--------------------------------------------------------------
-void Log::setMessage(const string& message) {
-	this->message = message;
-}
+	//--------------------------------------------------------------
+	void Log::executeFunction(Command* command) {
+		ofLog(level) << message;
+		notifyComplete();
+	}
 
+	//--------------------------------------------------------------
+	void Log::interruptFunction(Command* command) {
+	}
 
-
-
-
-//--------------------------------------------------------------
-ofLogLevel Log::getLevel() {
-	return level;
-}
-
-
-
-
-
-//--------------------------------------------------------------
-void Log::setLevel(ofLogLevel level) {
-	this->level = level;
-}
-
-
-
-
-
-
-//--------------------------------------------------------------
-void Log::executeFunction(Command* command) {
-	ofLog(level) << message;
-	notifyComplete();
-}
-
-
-
-
-
-//--------------------------------------------------------------
-void Log::interruptFunction(Command* command) {
+	//--------------------------------------------------------------
+	void Log::resetFunction(Command* command) {
+	}
 }
 
 

@@ -1,9 +1,11 @@
 #pragma once
 
 #include "ofMain.h"
-#include "command/Command.h"
+#include "Command.h"
+#include "../easing/Easing.h"
+#include "../easing/Collection.h"
 
-namespace command {
+namespace cmd {
 
 	class Tween : public Command {
 
@@ -14,66 +16,18 @@ namespace command {
 		// ----------------------------------------
 
 	public:
-		enum State {
+		enum class State {
 			STOPPED,
 			STARTED,
 			COMPLETED,
 		};
 
-		enum EventType {
+		enum class EventType {
 			STOP,
 			START,
-			CHANGE,
+			UPDATE,
 			COMPLETE,
 		};
-
-
-
-
-
-		// ----------------------------------------
-		//
-		// EASING
-		//
-		// ----------------------------------------
-
-	public:
-		typedef float (*Easing)(float, float, float, float);
-
-		static float easeNone(float t, float b, float c, float d);
-		static float easeInBack(float t, float b, float c, float d);
-		static float easeOutBack(float t, float b, float c, float d);
-		static float easeInOutBack(float t, float b, float c, float d);
-		static float easeInBounce(float t, float b, float c, float d);
-		static float easeOutBounce(float t, float b, float c, float d);
-		static float easeInOutBounce(float t, float b, float c, float d);
-		static float easeInCirc(float t, float b, float c, float d);
-		static float easeOutCirc(float t, float b, float c, float d);
-		static float easeInOutCirc(float t, float b, float c, float d);
-		static float easeInCubic(float t, float b, float c, float d);
-		static float easeOutCubic(float t, float b, float c, float d);
-		static float easeInOutCubic(float t, float b, float c, float d);
-		static float easeInElastic(float t, float b, float c, float d);
-		static float easeOutElastic(float t, float b, float c, float d);
-		static float easeInOutElastic(float t, float b, float c, float d);
-		static float easeInExpo(float t, float b, float c, float d);
-		static float easeOutExpo(float t, float b, float c, float d);
-		static float easeInOutExpo(float t, float b, float c, float d);
-		static float easeInQuad(float t, float b, float c, float d);
-		static float easeOutQuad(float t, float b, float c, float d);
-		static float easeInOutQuad(float t, float b, float c, float d);
-		static float easeInQuart(float t, float b, float c, float d);
-		static float easeOutQuart(float t, float b, float c, float d);
-		static float easeInOutQuart(float t, float b, float c, float d);
-		static float easeInQuint(float t, float b, float c, float d);
-		static float easeOutQuint(float t, float b, float c, float d);
-		static float easeInOutQuint(float t, float b, float c, float d);
-		static float easeInSine(float t, float b, float c, float d);
-		static float easeOutSine(float t, float b, float c, float d);
-		static float easeInOutSine(float t, float b, float c, float d);
-		static float easeInBreathe(float t, float b, float c, float d);
-		static float easeOutBreathe(float t, float b, float c, float d);
-		static float easeInOutBreathe(float t, float b, float c, float d);
 
 
 
@@ -112,22 +66,27 @@ namespace command {
 		// ----------------------------------------
 
 	public:
-		ofEvent<command::Command&> onStop;
-		ofEvent<command::Command&> onStart;
-		ofEvent<command::Command&> onChange;
+		static ofEvent<Tween> onCreate;
 
 	protected:
 
 	private:
+		string name;
+
 		vector<TweenObject> objects;
 
 		float duration;
-		Easing easing;
+		const cmd::Easing* easing;
 		bool isFrameBased;
 
 		Tween::State state;
 		bool isStarted;
 		float startTime;
+
+		function<void()> onStartCallback;
+		function<void()> onStopCallback;
+		function<void()> onUpdateCallback;
+		function<void()> onCompleteCallback;
 
 
 
@@ -140,43 +99,51 @@ namespace command {
 		// ----------------------------------------
 
 	public:
-		Tween(float duration = 1, Tween::Easing easing = NULL, bool isFrameBased = false);
+		Tween(float duration = 1, const cmd::Easing& easing = cmd::Linear::None, bool isFrameBased = false);
+		Tween(string name, float duration = 1, const cmd::Easing& easing = cmd::Linear::None, bool isFrameBased = false);
 		~Tween();
+
+		// Set tween value
+		Tween* animate(float& target, const float from, const float to);
+		Tween* animate(float& target, const float to);
+
+		// Set callback
+		Tween* onStart(const function<void()>& callback);
+		Tween* onStop(const function<void()>& callback);
+		Tween* onUpdate(const function<void()>& callback);
+		Tween* onComplete(const function<void()>& callback);
+
+		// Clear tween value
+		void clearAllTweens();
 
 		// Tween parameter
 		float getDuration();
 		void setDuration(float duration);
 
-		Tween::Easing getEasing();
-		void setEasing(Tween::Easing easing);
+		const cmd::Easing& getEasing();
+		void setEasing(const cmd::Easing& easing);
 
 		bool getIsFrameBased();
 		void setIsFrameBased(bool isFrameBased);
 
-		// Tween value
-		float getValue(int index = 0);
-		void clearAllTweens();
-
 		// Tween state
 		Tween::State getState();
+
 		bool getIsStopped();
 		bool getIsStarted();
 		bool getIsCompleted();
 
 	protected:
-		// Tween value
-		int addTween(const float from, const float to);
-		int addTween(const float* from, const float to);
-		int addTween(float* target, const float from, const float to);
-		int addTween(float* target, const float* from, const float to);
 
-		virtual void apply() = 0;
-		virtual void clear() = 0;
+		virtual void apply();
+		virtual void clear();
 
 		virtual void executeFunction(Command* command);
 		virtual void interruptFunction(Command* command);
-		
+		virtual void resetFunction(Command* command);
+
 	private:
+		void setup(string name, float duration, const cmd::Easing& easing, bool isFrameBased);
 		void start();
 		void stop();
 		void update();
@@ -188,7 +155,8 @@ namespace command {
 
 
 
-namespace command {
+/*
+namespace cmd {
 
 	//--------------------------------------------------------------
 	class NumericTween : public Tween {
@@ -293,6 +261,7 @@ namespace command {
 		vector<ofIndexType> vertexIndices;
 	};
 }
+*/
 
 
 

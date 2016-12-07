@@ -1,9 +1,18 @@
 #pragma once
 
 #include "ofMain.h"
-#include "var/CommandState.h"
 
-namespace command {
+namespace cmd {
+
+	enum class CommandState : int {
+		SLEEPING     = 0,
+		EXECUTING    = 1,
+		INTERRUPTING = 2,
+	};
+
+
+
+
 
 	class Command {
 
@@ -39,6 +48,7 @@ namespace command {
 
 		void execute();
 		void interrupt();
+		void reset();
 
 		CommandState getState();
 		Command* getParent();
@@ -58,6 +68,7 @@ namespace command {
 		// Override these
 		virtual void executeFunction(Command* command);
 		virtual void interruptFunction(Command* command);
+		virtual void resetFunction(Command* command);
 
 	private:
 	};
