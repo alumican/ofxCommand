@@ -44,9 +44,7 @@ using namespace cmd;
 ### Log
 
 ## Author
-**Yukiya Okuda**  
-Twitter: [@alumican_net](https://twitter.com/alumican_net)  
-Website: <http://alumican.net>
+**Yukiya Okuda** ([twitter](https://twitter.com/alumican_net) / [website](http://alumican.net))
 
 ## License
 > The code in this repository is available under the [MIT License](https://secure.wikimedia.org/wikipedia/en/wiki/Mit_license).
