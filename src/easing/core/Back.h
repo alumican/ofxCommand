@@ -4,64 +4,67 @@
 
 namespace cmd {
 
-	//--------------------------------------------------
-	class BackIn : public Easing {
+	namespace easing_internal {
 
-	public:
-		BackIn(float s = 1.70158) : Easing("easeBackIn") {
-			this->s = s;
+		//--------------------------------------------------
+		class BackIn : public Easing {
+
+		public:
+			BackIn(float s = 1.70158) : Easing("BackIn") {
+				this->s = s;
+			};
+
+			virtual float calculate(float t, float b, float c, float d) const {
+				float postFix = t /= d;
+				return c * (postFix)*t * ((s + 1) * t - s) + b;
+			};
+
+			float s;
 		};
 
-		virtual float calculate(float t, float b, float c, float d) const {
-			float postFix = t /= d;
-			return c * (postFix)*t * ((s + 1) * t - s) + b;
+
+
+
+
+		//--------------------------------------------------
+		class BackInOut : public Easing {
+
+		public:
+			BackInOut(float s = 1.70158) : Easing("BackInOut") {
+				this->s = s;
+			};
+
+			virtual float calculate(float t, float b, float c, float d) const {
+				float s2 = s * 1.525f;
+				if ((t /= d / 2) < 1) {
+					return c / 2 * (t * t * ((s2 + 1) * t - s2)) + b;
+				}
+				float postFix = t -= 2;
+				return c / 2 * ((postFix)*t * ((s2 + 1) * t + s2) + 2) + b;
+			};
+
+			float s;
 		};
 
-		float s;
-	};
 
 
 
+		//--------------------------------------------------
+		class BackOut : public Easing {
 
+		public:
+			BackOut(float s = 1.70158) : Easing("BackOut") {
+				this->s = s;
+			};
 
-	//--------------------------------------------------
-	class BackInOut : public Easing {
-
-	public:
-		BackInOut(float s = 1.70158) : Easing("easeBackInOut") {
-			this->s = s;
+			virtual float calculate(float t, float b, float c, float d) const {
+				t = t / d - 1;
+				return c * (t * t * ((s + 1) * t + s) + 1) + b;
+			};
+			
+			float s;
 		};
-
-		virtual float calculate(float t, float b, float c, float d) const {
-			float s2 = s * 1.525f;
-			if ((t /= d / 2) < 1) {
-				return c / 2 * (t * t * ((s2 + 1) * t - s2)) + b;
-			}
-			float postFix = t -= 2;
-			return c / 2 * ((postFix)*t * ((s2 + 1) * t + s2) + 2) + b;
-		};
-
-		float s;
-	};
-
-
-
-
-	//--------------------------------------------------
-	class BackOut : public Easing {
-
-	public:
-		BackOut(float s = 1.70158) : Easing("easeBackOut") {
-			this->s = s;
-		};
-
-		virtual float calculate(float t, float b, float c, float d) const {
-			t = t / d - 1;
-			return c * (t * t * ((s + 1) * t + s) + 1) + b;
-		};
-
-		float s;
-	};
+	}
 }
 
 

@@ -1,7 +1,6 @@
 #pragma once
 
 #include <functional>
-#include "ofMain.h"
 #include "Command.h"
 
 namespace cmd {

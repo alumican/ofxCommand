@@ -28,6 +28,9 @@ namespace cmd {
 	protected:
 
 	private:
+		static map<string, Command*> commandsByName;
+
+		string name;
 		CommandState state;
 		Command* parent;
 		bool deleteOnComplete;
@@ -43,7 +46,9 @@ namespace cmd {
 		// ----------------------------------------
 
 	public:
-		Command();
+		static Command* getCommandByName(string name);
+
+		Command(string name = "");
 		virtual ~Command();
 
 		void execute();
@@ -52,6 +57,9 @@ namespace cmd {
 
 		CommandState getState();
 		Command* getParent();
+
+		string getName();
+		void setName(string name);
 
 		bool getDeleteOnComplete();
 		void setDeleteOnComplete(bool value);
@@ -71,8 +79,9 @@ namespace cmd {
 		virtual void resetFunction(Command* command);
 
 	private:
+		static void registerCommandByName(string name, Command* command);
+		static void removeCommandByName(string name);
 	};
-	
 }
 
 

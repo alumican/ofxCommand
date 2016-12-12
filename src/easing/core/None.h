@@ -4,17 +4,20 @@
 
 namespace cmd {
 
-	//--------------------------------------------------
-	class None : public Easing {
+	namespace easing_internal {
 
-	public:
-		None() : Easing("linear") {
-		};
+		//--------------------------------------------------
+		class None : public Easing {
 
-		virtual float calculate(float t, float b, float c, float d) const {
-			return c * t / d + b;
+		public:
+			None() : Easing("Linear") {
+			};
+
+			virtual float calculate(float t, float b, float c, float d) const {
+				return c * t / d + b;
+			};
 		};
-	};
+	}
 }
 
 

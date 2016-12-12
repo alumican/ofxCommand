@@ -2,16 +2,26 @@
 
 namespace cmd {
 
+	map<string, Command*> Command::commandsByName;
+
+
+
+
+
 	//--------------------------------------------------------------
-	Command::Command() {
+	Command::Command(string name) {
 		state = CommandState::SLEEPING;
 		parent = NULL;
 		deleteOnComplete = false;
+
+		this->name = "";
+		setName(name);
 	}
 
 	//--------------------------------------------------------------
 	Command::~Command() {
 		parent = NULL;
+		removeCommandByName(name);
 	}
 
 
@@ -68,6 +78,19 @@ namespace cmd {
 
 
 
+
+	//--------------------------------------------------------------
+	string Command::getName() {
+		return name;
+	}
+
+	//--------------------------------------------------------------
+	void Command::setName(string name) {
+		if (name == this->name) return;
+		removeCommandByName(this->name);
+		registerCommandByName(name, this);
+		this->name = name;
+	}
 
 	//--------------------------------------------------------------
 	CommandState Command::getState() {
@@ -127,6 +150,30 @@ namespace cmd {
 		} else {
 			notifyComplete();
 		}
+	}
+
+
+
+
+	//--------------------------------------------------------------
+	Command* Command::getCommandByName(string name) {
+		return commandsByName.count(name) > 0 ? commandsByName[name] : NULL;
+	}
+
+	//--------------------------------------------------------------
+	void Command::registerCommandByName(string name, Command* command) {
+		if (name == "") return;
+		if (commandsByName.count(name) == 0) {
+			commandsByName[name] = command;
+		} else {
+			ofLogError() << "Command name is duplicated : name = " << name;
+		}
+	}
+
+	//--------------------------------------------------------------
+	void Command::removeCommandByName(string name) {
+		if (name == "") return;
+		commandsByName.erase(name);
 	}
 }
 

@@ -4,100 +4,103 @@
 
 namespace cmd {
 
-	//--------------------------------------------------
-	class BounceIn : public Easing {
+	namespace easing_internal {
 
-	public:
-		BounceIn() : Easing("easeBounceIn") {
-		};
+		//--------------------------------------------------
+		class BounceIn : public Easing {
 
-		virtual float calculate(float t, float b, float c, float d) const {
-			t = d - t;
-			if ((t /= d) < (1 / 2.75f)) {
-				return c - c * (7.5625f * t * t) + b;
-			} else if (t < (2 / 2.75f)) {
-				float postFix = t -= (1.5f / 2.75f);
-				return c - c * (7.5625f * (postFix)*t + .75f) + b;
-			} else if (t < (2.5 / 2.75)) {
-				float postFix = t -= (2.25f / 2.75f);
-				return c - c * (7.5625f * (postFix)*t + .9375f) + b;
-			} else {
-				float postFix = t -= (2.625f / 2.75f);
-				return c - c * (7.5625f * (postFix)*t + .984375f) + b;
-			}
-		};
-	};
+		public:
+			BounceIn() : Easing("BounceIn") {
+			};
 
-
-
-
-
-	//--------------------------------------------------
-	class BounceInOut : public Easing {
-
-	public:
-		BounceInOut() : Easing("easeBounceInOut") {
-		};
-
-		virtual float calculate(float t, float b, float c, float d) const {
-			if (t < d / 2) {
-				t = d - t * 2;
+			virtual float calculate(float t, float b, float c, float d) const {
+				t = d - t;
 				if ((t /= d) < (1 / 2.75f)) {
-					return (c - c * (7.5625f * t * t)) * 0.5f + b;
+					return c - c * (7.5625f * t * t) + b;
 				} else if (t < (2 / 2.75f)) {
 					float postFix = t -= (1.5f / 2.75f);
-					return (c - c * (7.5625f * (postFix)*t + .75f)) * 0.5f + b;
+					return c - c * (7.5625f * (postFix)*t + .75f) + b;
 				} else if (t < (2.5 / 2.75)) {
 					float postFix = t -= (2.25f / 2.75f);
-					return (c - c * (7.5625f * (postFix)*t + .9375f)) * 0.5f + b;
+					return c - c * (7.5625f * (postFix)*t + .9375f) + b;
 				} else {
 					float postFix = t -= (2.625f / 2.75f);
-					return (c - c * (7.5625f * (postFix)*t + .984375f)) * 0.5f + b;
+					return c - c * (7.5625f * (postFix)*t + .984375f) + b;
 				}
-			} else {
-				t = t * 2 - d;
+			};
+		};
+
+
+
+
+
+		//--------------------------------------------------
+		class BounceInOut : public Easing {
+
+		public:
+			BounceInOut() : Easing("BounceInOut") {
+			};
+
+			virtual float calculate(float t, float b, float c, float d) const {
+				if (t < d / 2) {
+					t = d - t * 2;
+					if ((t /= d) < (1 / 2.75f)) {
+						return (c - c * (7.5625f * t * t)) * 0.5f + b;
+					} else if (t < (2 / 2.75f)) {
+						float postFix = t -= (1.5f / 2.75f);
+						return (c - c * (7.5625f * (postFix)*t + .75f)) * 0.5f + b;
+					} else if (t < (2.5 / 2.75)) {
+						float postFix = t -= (2.25f / 2.75f);
+						return (c - c * (7.5625f * (postFix)*t + .9375f)) * 0.5f + b;
+					} else {
+						float postFix = t -= (2.625f / 2.75f);
+						return (c - c * (7.5625f * (postFix)*t + .984375f)) * 0.5f + b;
+					}
+				} else {
+					t = t * 2 - d;
+					if ((t /= d) < (1 / 2.75f)) {
+						return (c * (7.5625f * t * t)) * 0.5f + c * 0.5f + b;
+					} else if (t < (2 / 2.75f)) {
+						float postFix = t -= (1.5f / 2.75f);
+						return (c * (7.5625f * (postFix)*t + .75f)) * 0.5f + c * 0.5f + b;
+					} else if (t < (2.5 / 2.75)) {
+						float postFix = t -= (2.25f / 2.75f);
+						return (c * (7.5625f * (postFix)*t + .9375f)) * 0.5f + c * 0.5f + b;
+					} else {
+						float postFix = t -= (2.625f / 2.75f);
+						return (c * (7.5625f * (postFix)*t + .984375f)) * 0.5f + c * 0.5f + b;
+					}
+				}
+			};
+		};
+
+
+
+
+
+		//--------------------------------------------------
+		class BounceOut : public Easing {
+
+		public:
+			BounceOut() : Easing("BounceOut") {
+			};
+
+			virtual float calculate(float t, float b, float c, float d) const {
 				if ((t /= d) < (1 / 2.75f)) {
-					return (c * (7.5625f * t * t)) * 0.5f + c * 0.5f + b;
+					return c * (7.5625f * t * t) + b;
 				} else if (t < (2 / 2.75f)) {
 					float postFix = t -= (1.5f / 2.75f);
-					return (c * (7.5625f * (postFix)*t + .75f)) * 0.5f + c * 0.5f + b;
+					return c * (7.5625f * (postFix)*t + .75f) + b;
 				} else if (t < (2.5 / 2.75)) {
 					float postFix = t -= (2.25f / 2.75f);
-					return (c * (7.5625f * (postFix)*t + .9375f)) * 0.5f + c * 0.5f + b;
+					return c * (7.5625f * (postFix)*t + .9375f) + b;
 				} else {
 					float postFix = t -= (2.625f / 2.75f);
-					return (c * (7.5625f * (postFix)*t + .984375f)) * 0.5f + c * 0.5f + b;
+					return c * (7.5625f * (postFix)*t + .984375f) + b;
 				}
-			}
+			};
 		};
-	};
-
-
-
-
-
-	//--------------------------------------------------
-	class BounceOut : public Easing {
-
-	public:
-		BounceOut() : Easing("easeBounceOut") {
-		};
-
-		virtual float calculate(float t, float b, float c, float d) const {
-			if ((t /= d) < (1 / 2.75f)) {
-				return c * (7.5625f * t * t) + b;
-			} else if (t < (2 / 2.75f)) {
-				float postFix = t -= (1.5f / 2.75f);
-				return c * (7.5625f * (postFix)*t + .75f) + b;
-			} else if (t < (2.5 / 2.75)) {
-				float postFix = t -= (2.25f / 2.75f);
-				return c * (7.5625f * (postFix)*t + .9375f) + b;
-			} else {
-				float postFix = t -= (2.625f / 2.75f);
-				return c * (7.5625f * (postFix)*t + .984375f) + b;
-			}
-		};
-	};
+	}
 }
 
 

@@ -2,31 +2,21 @@
 
 namespace cmd {
 
-	ofEvent<Tween> Tween::onCreate;
-
-
-
-
-
 	//--------------------------------------------------------------
-	Tween::Tween(float duration, const cmd::Easing& easing, bool isFrameBased) {
-		setup("", duration, easing, isFrameBased);
+	Tween::Tween(string name, float duration, const cmd::Easing& easing, bool isFrameBased) : Command(name) {
+		setup(duration, easing, isFrameBased);
 	}
 
 	//--------------------------------------------------------------
-	Tween::Tween(string name, float duration, const cmd::Easing& easing, bool isFrameBased) {
-		setup(name, duration, easing, isFrameBased);
+	Tween::Tween(float duration, const cmd::Easing& easing, bool isFrameBased) {
+		setup(duration, easing, isFrameBased);
 	}
 
 	//--------------------------------------------------------------
 	Tween::~Tween() {
 		ofRemoveListener(ofEvents().update, this, &Tween::updateHandler);
 		clearAllTweens();
-		if (name != "") {
-			ofLogVerbose() << "Bye Tween : name = " << name;
-		} else {
-			ofLogVerbose() << "Bye Tween";
-		}
+		ofLogVerbose() << "Bye Tween";
 	}
 
 
@@ -114,26 +104,26 @@ namespace cmd {
 
 
 	//--------------------------------------------------------------
-	Tween* Tween::onStart(const function<void()>& callback) {
-		onStartCallback = callback;
+	Tween* Tween::atStart(const function<void()>& callback) {
+		atStartCallback = callback;
 		return this;
 	}
 
 	//--------------------------------------------------------------
-	Tween* Tween::onStop(const function<void()>& callback) {
-		onStopCallback = callback;
+	Tween* Tween::atStop(const function<void()>& callback) {
+		atStopCallback = callback;
 		return this;
 	}
 
 	//--------------------------------------------------------------
-	Tween* Tween::onUpdate(const function<void()>& callback) {
-		onUpdateCallback = callback;
+	Tween* Tween::atUpdate(const function<void()>& callback) {
+		atUpdateCallback = callback;
 		return this;
 	}
 
 	//--------------------------------------------------------------
-	Tween* Tween::onComplete(const function<void()>& callback) {
-		onCompleteCallback = callback;
+	Tween* Tween::atComplete(const function<void()>& callback) {
+		atCompleteCallback = callback;
 		return this;
 	}
 
@@ -152,8 +142,7 @@ namespace cmd {
 
 
 	//--------------------------------------------------------------
-	void Tween::setup(string name, float duration, const cmd::Easing& easing, bool isFrameBased) {
-		this->name = name;
+	void Tween::setup(float duration, const Easing& easing, bool isFrameBased) {
 		this->duration = duration;
 		this->easing = &easing;
 		this->isFrameBased = isFrameBased;
@@ -191,8 +180,8 @@ namespace cmd {
 
 		// Start
 		ofAddListener(ofEvents().update, this, &Tween::updateHandler);
-		if (onStartCallback != NULL) onStartCallback();
-		//ofNotifyEvent(onStart, *this);
+		if (atStartCallback != NULL) atStartCallback();
+		ofNotifyEvent(onStart, *this);
 		update();
 	}
 
@@ -204,8 +193,8 @@ namespace cmd {
 
 		// Stop
 		ofRemoveListener(ofEvents().update, this, &Tween::updateHandler);
-		if (onStopCallback != NULL) onStopCallback();
-		//ofNotifyEvent(onStop, *this);
+		if (atStopCallback != NULL) atStopCallback();
+		ofNotifyEvent(onStop, *this);
 	}
 
 	//--------------------------------------------------------------
@@ -240,15 +229,15 @@ namespace cmd {
 
 		// onUpdate
 		if (state == Tween::State::STARTED) {
-			if (onUpdateCallback != NULL) onUpdateCallback();
-			//ofNotifyEvent(onUpdate, *this);
+			if (atUpdateCallback != NULL) atUpdateCallback();
+			ofNotifyEvent(onUpdate, *this);
 		}
 
 		// onComplete
 		if (state != Tween::State::COMPLETED && timeRatio == 1) {
 			state = Tween::State::COMPLETED;
 			stop();
-			if (onCompleteCallback != NULL) onCompleteCallback();
+			if (atCompleteCallback != NULL) atCompleteCallback();
 			notifyComplete();
 		}
 	}

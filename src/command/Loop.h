@@ -1,6 +1,5 @@
 #pragma once
 
-#include "ofMain.h"
 #include "Command.h"
 
 namespace cmd {
@@ -33,6 +32,7 @@ namespace cmd {
 		// ----------------------------------------
 
 	public:
+		Loop(string name, Command* target = NULL, int loopCount = -1);
 		Loop(Command* target = NULL, int loopCount = -1);
 		~Loop();
 
@@ -50,6 +50,8 @@ namespace cmd {
 		virtual void resetFunction(Command* command);
 
 	private:
+		void setup(Command* target, int loopCount);
+
 		void checkComplete();
 		void completeHandler(Command& command);
 	};

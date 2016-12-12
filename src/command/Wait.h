@@ -1,6 +1,5 @@
 #pragma once
 
-#include "ofMain.h"
 #include "Command.h"
 
 namespace cmd {
@@ -33,6 +32,7 @@ namespace cmd {
 		// ----------------------------------------
 
 	public:
+		Wait(string name, float duration = 1, bool isFrameBased = false);
 		Wait(float duration = 1, bool isFrameBased = false);
 		~Wait();
 
@@ -48,6 +48,7 @@ namespace cmd {
 		virtual void resetFunction(Command* command);
 
 	private:
+		void setup(float duration, bool isFrameBased);
 		void update(ofEventArgs& event);
 		void checkComplete();
 	};

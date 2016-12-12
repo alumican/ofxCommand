@@ -3,9 +3,13 @@
 namespace cmd {
 
 	//--------------------------------------------------------------
+	Wait::Wait(string name, float duration, bool isFrameBased) : Command(name) {
+		setup(duration, isFrameBased);
+	}
+
+	//--------------------------------------------------------------
 	Wait::Wait(float duration, bool isFrameBased) {
-		this->duration = duration;
-		this->isFrameBased = isFrameBased;
+		setup(duration, isFrameBased);
 	}
 
 	//--------------------------------------------------------------
@@ -65,6 +69,12 @@ namespace cmd {
 
 
 
+
+	//--------------------------------------------------------------
+	void Wait::setup(float duration, bool isFrameBased) {
+		this->duration = duration;
+		this->isFrameBased = isFrameBased;
+	}
 
 	//--------------------------------------------------------------
 	void Wait::update(ofEventArgs& event) {

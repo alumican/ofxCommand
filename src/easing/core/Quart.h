@@ -4,52 +4,55 @@
 
 namespace cmd {
 
-	//--------------------------------------------------
-	class QuartIn : public Easing {
+	namespace easing_internal {
 
-	public:
-		QuartIn() : Easing("easeQuartIn") {
+		//--------------------------------------------------
+		class QuartIn : public Easing {
+
+		public:
+			QuartIn() : Easing("QuartIn") {
+			};
+
+			virtual float calculate(float t, float b, float c, float d) const {
+				t /= d;
+				return c * t * t * t * t + b;
+			};
 		};
 
-		virtual float calculate(float t, float b, float c, float d) const {
-			t /= d;
-			return c * t * t * t * t + b;
-		};
-	};
 
 
 
 
+		//--------------------------------------------------
+		class QuartInOut : public Easing {
 
-	//--------------------------------------------------
-	class QuartInOut : public Easing {
+		public:
+			QuartInOut() : Easing("QuartInOut") {
+			};
 
-	public:
-		QuartInOut() : Easing("easeQuartInOut") {
-		};
-
-		virtual float calculate(float t, float b, float c, float d) const {
-			if ((t /= d / 2) < 1) return c / 2 * t * t * t * t + b;
-			t -= 2;
-			return -c / 2 * (t * t * t * t - 2) + b;
-		};
-	};
-
-
-
-
-	//--------------------------------------------------
-	class QuartOut : public Easing {
-
-	public:
-		QuartOut() : Easing("easeQuartOut") {
+			virtual float calculate(float t, float b, float c, float d) const {
+				if ((t /= d / 2) < 1) return c / 2 * t * t * t * t + b;
+				t -= 2;
+				return -c / 2 * (t * t * t * t - 2) + b;
+			};
 		};
 
-		virtual float calculate(float t, float b, float c, float d) const {
-			t = t / d - 1;
-			return -c * (t * t * t * t - 1) + b;
+
+
+
+		//--------------------------------------------------
+		class QuartOut : public Easing {
+
+		public:
+			QuartOut() : Easing("QuartOut") {
+			};
+
+			virtual float calculate(float t, float b, float c, float d) const {
+				t = t / d - 1;
+				return -c * (t * t * t * t - 1) + b;
+			};
 		};
-	};
+	}
 }
 
 

@@ -3,10 +3,13 @@
 namespace cmd {
 
 	//--------------------------------------------------------------
+	Loop::Loop(string name, Command* target, int loopCount) : Command(name) {
+		setup(target, loopCount);
+	}
+
+	//--------------------------------------------------------------
 	Loop::Loop(Command* target, int loopCount) {
-		this->target = target;
-		this->loopCount = loopCount;
-		currentCount = 0;
+		setup(target, loopCount);
 	}
 
 	//--------------------------------------------------------------
@@ -15,6 +18,17 @@ namespace cmd {
 			this->target = NULL;
 		}
 		ofLogVerbose() << "Bye Loop";
+	}
+
+
+
+
+
+	//--------------------------------------------------------------
+	void Loop::setup(Command* target, int loopCount) {
+		this->target = target;
+		this->loopCount = loopCount;
+		currentCount = 0;
 	}
 
 

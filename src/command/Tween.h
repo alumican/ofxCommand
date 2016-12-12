@@ -1,6 +1,5 @@
 #pragma once
 
-#include "ofMain.h"
 #include "Command.h"
 #include "../easing/Easing.h"
 #include "../easing/Collection.h"
@@ -66,13 +65,13 @@ namespace cmd {
 		// ----------------------------------------
 
 	public:
-		static ofEvent<Tween> onCreate;
+		ofEvent<Command&> onStart;
+		ofEvent<Command&> onStop;
+		ofEvent<Command&> onUpdate;
 
 	protected:
 
 	private:
-		string name;
-
 		vector<TweenObject> objects;
 
 		float duration;
@@ -83,10 +82,10 @@ namespace cmd {
 		bool isStarted;
 		float startTime;
 
-		function<void()> onStartCallback;
-		function<void()> onStopCallback;
-		function<void()> onUpdateCallback;
-		function<void()> onCompleteCallback;
+		function<void()> atStartCallback;
+		function<void()> atStopCallback;
+		function<void()> atUpdateCallback;
+		function<void()> atCompleteCallback;
 
 
 
@@ -99,8 +98,8 @@ namespace cmd {
 		// ----------------------------------------
 
 	public:
-		Tween(float duration = 1, const cmd::Easing& easing = cmd::Linear::None, bool isFrameBased = false);
 		Tween(string name, float duration = 1, const cmd::Easing& easing = cmd::Linear::None, bool isFrameBased = false);
+		Tween(float duration = 1, const cmd::Easing& easing = cmd::Linear::None, bool isFrameBased = false);
 		~Tween();
 
 		// Set tween value
@@ -108,10 +107,10 @@ namespace cmd {
 		Tween* animate(float& target, const float to);
 
 		// Set callback
-		Tween* onStart(const function<void()>& callback);
-		Tween* onStop(const function<void()>& callback);
-		Tween* onUpdate(const function<void()>& callback);
-		Tween* onComplete(const function<void()>& callback);
+		Tween* atStart(const function<void()>& callback);
+		Tween* atStop(const function<void()>& callback);
+		Tween* atUpdate(const function<void()>& callback);
+		Tween* atComplete(const function<void()>& callback);
 
 		// Clear tween value
 		void clearAllTweens();
@@ -143,7 +142,7 @@ namespace cmd {
 		virtual void resetFunction(Command* command);
 
 	private:
-		void setup(string name, float duration, const cmd::Easing& easing, bool isFrameBased);
+		void setup(float duration, const cmd::Easing& easing, bool isFrameBased);
 		void start();
 		void stop();
 		void update();

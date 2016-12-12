@@ -40,27 +40,27 @@ void ofApp::setup() {
 		new Wait(0.5),
 
 		new Log("Start tween from current value"),
-		(new Tween(1, Quart::Out))->animate(value, 100)->onStart([&] {
-			ofLog() << "Tween onStart : value = " << value;
-		})->onStop([&] {
-			ofLog() << "Tween onStop : value = " << value;
-		})->onUpdate([&] {
-			ofLog() << "Tween onUpdate : value = " << value;
-		})->onComplete([&] {
-			ofLog() << "Tween onComplete : value = " << value;
+		(new Tween(1, Quart::Out))->animate(value, 100)->atStart([&] {
+			ofLog() << "Tween atStart : value = " << value;
+		})->atStop([&] {
+			ofLog() << "Tween atStop : value = " << value;
+		})->atUpdate([&] {
+			ofLog() << "Tween atUpdate : value = " << value;
+		})->atComplete([&] {
+			ofLog() << "Tween atComplete : value = " << value;
 		}),
 
 		new Wait(0.5),
 
 		new Log("Start tween from current specified value"),
-		(new Tween(1, Expo::In))->animate(value, 50, 100)->onStart([&] {
-			ofLog() << "Tween onStart : value = " << value;
-		})->onStop([&] {
-			ofLog() << "Tween onStop : value = " << value;
-		})->onUpdate([&] {
-			ofLog() << "Tween onUpdate : value = " << value;
-		})->onComplete([&] {
-			ofLog() << "Tween onComplete : value = " << value;
+		(new Tween(1, Expo::In))->animate(value, 50, 100)->atStart([&] {
+			ofLog() << "Tween atStart : value = " << value;
+		})->atStop([&] {
+			ofLog() << "Tween atStop : value = " << value;
+		})->atUpdate([&] {
+			ofLog() << "Tween atUpdate : value = " << value;
+		})->atComplete([&] {
+			ofLog() << "Tween atComplete : value = " << value;
 		}),
 
 		new Log("Sequence is completed"),

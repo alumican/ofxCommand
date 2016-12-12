@@ -1,7 +1,5 @@
 #pragma once
 
-#include "ofMain.h"
-
 #include "easing/Collection.h"
 
 #include "command/Command.h"
