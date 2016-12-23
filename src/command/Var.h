@@ -32,6 +32,14 @@ namespace cmd {
 		// ----------------------------------------
 
 	public:
+		Var() {
+			this->target = NULL;
+		};
+
+		Var(T& target) {
+			this->target = &target;
+		};
+
 		Var(T& target, T value) {
 			this->target = &target;
 			this->value = value;
@@ -41,7 +49,7 @@ namespace cmd {
 			ofLogVerbose() << "Bye Var";
 		};
 
-		T* getTarget() {
+		T* getTarget() const {
 			return target;
 		};
 
@@ -49,7 +57,7 @@ namespace cmd {
 			this->target = target;
 		};
 
-		T getValue() {
+		T getValue() const {
 			return value;
 		};
 
@@ -58,7 +66,7 @@ namespace cmd {
 		};
 
 	protected:
-		virtual void executeFunction(Command* command) {
+		virtual void runFunction(Command* command) {
 			if (target != NULL) {
 				*target = value;
 			}

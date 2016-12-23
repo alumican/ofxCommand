@@ -29,18 +29,18 @@ namespace cmd {
 
 
 	//--------------------------------------------------------------
-	void Command::execute() {
+	void Command::run() {
 		if (state > CommandState::SLEEPING) {
-			ofLogError() << "Command is already executing.";
+			ofLogError() << "Command is already running.";
 		} else {
-			state = CommandState::EXECUTING;
-			executeFunction(this);
+			state = CommandState::RUNNING;
+			runFunction(this);
 		}
 	}
 
 	//--------------------------------------------------------------
 	void Command::interrupt() {
-		if (state == CommandState::EXECUTING) {
+		if (state == CommandState::RUNNING) {
 			state = CommandState::INTERRUPTING;
 			interruptFunction(this);
 		}
@@ -64,7 +64,7 @@ namespace cmd {
 		switch (state) {
 			case CommandState::SLEEPING:
 				break;
-			case CommandState::EXECUTING:
+			case CommandState::RUNNING:
 			case CommandState::INTERRUPTING:
 				ofNotifyEvent(onComplete, *this);
 				//TODO: FIX (Why deleteOnComplete is true automatically ???)
@@ -80,7 +80,7 @@ namespace cmd {
 
 
 	//--------------------------------------------------------------
-	string Command::getName() {
+	string Command::getName() const {
 		return name;
 	}
 
@@ -93,17 +93,17 @@ namespace cmd {
 	}
 
 	//--------------------------------------------------------------
-	CommandState Command::getState() {
+	CommandState Command::getState() const {
 		return state;
 	}
 
 	//--------------------------------------------------------------
-	Command* Command::getParent() {
+	Command* Command::getParent() const {
 		return parent;
 	}
 
 	//--------------------------------------------------------------
-	bool Command::getDeleteOnComplete() {
+	bool Command::getDeleteOnComplete() const {
 		return deleteOnComplete;
 	}
 
@@ -122,7 +122,7 @@ namespace cmd {
 
 
 	//--------------------------------------------------------------
-	void Command::executeFunction(Command* command) {
+	void Command::runFunction(Command* command) {
 		notifyComplete();
 	}
 

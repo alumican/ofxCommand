@@ -3,6 +3,11 @@
 namespace cmd {
 
 	//--------------------------------------------------------------
+	Function::Function() {
+		this->f = NULL;
+	}
+
+	//--------------------------------------------------------------
 	Function::Function(const function<void()>& f) {
 		this->f = f;
 	}
@@ -18,7 +23,7 @@ namespace cmd {
 
 
 	//--------------------------------------------------------------
-	function<void()> Function::getFunction() {
+	function<void()> Function::getFunction() const {
 		return f;
 	}
 
@@ -32,7 +37,7 @@ namespace cmd {
 
 
 	//--------------------------------------------------------------
-	void Function::executeFunction(Command* command) {
+	void Function::runFunction(Command* command) {
 		if (f != NULL) {
 			f();
 		}

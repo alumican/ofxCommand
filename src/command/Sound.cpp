@@ -27,7 +27,7 @@ namespace cmd {
 
 
 	//--------------------------------------------------------------
-	ofSoundPlayer* Sound::getSoundPlayer() {
+	ofSoundPlayer* Sound::getSoundPlayer() const {
 		return soundPlayer;
 	}
 
@@ -37,7 +37,7 @@ namespace cmd {
 	}
 
 	//--------------------------------------------------------------
-	bool Sound::getWaitForComplete() {
+	bool Sound::getWaitForComplete() const {
 		return waitForComplete;
 	}
 
@@ -47,7 +47,7 @@ namespace cmd {
 	}
 
 	//--------------------------------------------------------------
-	bool Sound::getUnloadOnComplete() {
+	bool Sound::getUnloadOnComplete() const {
 		return unloadOnComplete;
 	}
 
@@ -61,7 +61,7 @@ namespace cmd {
 
 
 	//--------------------------------------------------------------
-	void Sound::executeFunction(Command* command) {
+	void Sound::runFunction(Command* command) {
 		if (soundPlayer != NULL) {
 			soundPlayer->setPosition(0);
 			soundPlayer->play();

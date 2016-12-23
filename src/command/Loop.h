@@ -32,25 +32,26 @@ namespace cmd {
 		// ----------------------------------------
 
 	public:
-		Loop(string name, Command* target = NULL, int loopCount = -1);
-		Loop(Command* target = NULL, int loopCount = -1);
+		Loop(string name, int loopCount = -1, Command* target = NULL);
+		Loop(int loopCount = -1, Command* target = NULL);
+		Loop(Command* target);
 		~Loop();
 
-		int getCurrentCount();
+		int getCurrentCount() const;
 
-		Command* getTarget();
+		Command* getTarget() const;
 		void setTarget(Command* command);
 
-		int getLoopCount();
+		int getLoopCount() const;
 		void setLoopCount(int loopCount);
 
 	protected:
-		virtual void executeFunction(Command* command);
+		virtual void runFunction(Command* command);
 		virtual void interruptFunction(Command* command);
 		virtual void resetFunction(Command* command);
 
 	private:
-		void setup(Command* target, int loopCount);
+		void setup(int loopCount, Command* target);
 
 		void checkComplete();
 		void completeHandler(Command& command);

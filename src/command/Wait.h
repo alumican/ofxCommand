@@ -36,14 +36,14 @@ namespace cmd {
 		Wait(float duration = 1, bool isFrameBased = false);
 		~Wait();
 
-		float getDuration();
+		float getDuration() const;
 		void setDuration(float duration);
 
-		bool getIsFrameBased();
+		bool getIsFrameBased() const;
 		void setIsFrameBased(bool isFrameBased);
 
 	protected:
-		virtual void executeFunction(Command* command);
+		virtual void runFunction(Command* command);
 		virtual void interruptFunction(Command* command);
 		virtual void resetFunction(Command* command);
 

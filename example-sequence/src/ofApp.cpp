@@ -40,33 +40,34 @@ void ofApp::setup() {
 		new Wait(0.5),
 
 		new Log("Start tween from current value"),
-		(new Tween(1, Quart::Out))->animate(value, 100)->atStart([&] {
-			ofLog() << "Tween atStart : value = " << value;
-		})->atStop([&] {
-			ofLog() << "Tween atStop : value = " << value;
-		})->atUpdate([&] {
-			ofLog() << "Tween atUpdate : value = " << value;
-		})->atComplete([&] {
-			ofLog() << "Tween atComplete : value = " << value;
-		}),
+		(new Tween(1, Quart::Out))->animate(value, 100)
+			->atStart([&](Tween& tween) {
+				ofLog() << "Tween atStart : time = " << tween.getTimeRatio() << ", value = " << tween.getValueRatio();
+			})->atStop([&](Tween& tween) {
+				ofLog() << "Tween atStop : time = " << tween.getTimeRatio() << ", value = " << tween.getValueRatio();
+			})->atUpdate([&](Tween& tween) {
+				ofLog() << "Tween atUpdate : time = " << tween.getTimeRatio() << ", value = " << tween.getValueRatio();
+			})->atComplete([&](Tween& tween) {
+				ofLog() << "Tween atComplete : time = " << tween.getTimeRatio() << ", value = " << tween.getValueRatio();
+			}),
 
 		new Wait(0.5),
 
 		new Log("Start tween from current specified value"),
-		(new Tween(1, Expo::In))->animate(value, 50, 100)->atStart([&] {
+		(new Tween(1, Expo::In))->animate(value, 50, 100)->atStart([&](Tween& tween) {
 			ofLog() << "Tween atStart : value = " << value;
-		})->atStop([&] {
+		})->atStop([&](Tween& tween) {
 			ofLog() << "Tween atStop : value = " << value;
-		})->atUpdate([&] {
+		})->atUpdate([&](Tween& tween) {
 			ofLog() << "Tween atUpdate : value = " << value;
-		})->atComplete([&] {
+		})->atComplete([&](Tween& tween) {
 			ofLog() << "Tween atComplete : value = " << value;
 		}),
 
 		new Log("Sequence is completed"),
 	});
 
-	sequence->execute();
+	sequence->run();
 }
 
 //--------------------------------------------------------------

@@ -27,7 +27,7 @@ namespace cmd {
 
 
 	//--------------------------------------------------------------
-	ofVideoPlayer* Video::getVideoPlayer() {
+	ofVideoPlayer* Video::getVideoPlayer() const {
 		return videoPlayer;
 	}
 
@@ -37,7 +37,7 @@ namespace cmd {
 	}
 
 	//--------------------------------------------------------------
-	bool Video::getWaitForComplete() {
+	bool Video::getWaitForComplete() const {
 		return waitForComplete;
 	}
 
@@ -47,7 +47,7 @@ namespace cmd {
 	}
 
 	//--------------------------------------------------------------
-	bool Video::getCloseOnComplete() {
+	bool Video::getCloseOnComplete() const {
 		return closeOnComplete;
 	}
 
@@ -61,7 +61,7 @@ namespace cmd {
 
 
 	//--------------------------------------------------------------
-	void Video::executeFunction(Command* command) {
+	void Video::runFunction(Command* command) {
 		if (videoPlayer != NULL) {
 			ofAddListener(ofEvents().update, this, &Video::update);
 			videoPlayer->setFrame(0);

@@ -22,7 +22,7 @@ namespace cmd {
 
 
 	//--------------------------------------------------------------
-	float Wait::getDuration() {
+	float Wait::getDuration() const {
 		return duration;
 	}
 
@@ -32,7 +32,7 @@ namespace cmd {
 	}
 
 	//--------------------------------------------------------------
-	bool Wait::getIsFrameBased() {
+	bool Wait::getIsFrameBased() const {
 		return isFrameBased;
 	}
 
@@ -46,7 +46,7 @@ namespace cmd {
 
 
 	//--------------------------------------------------------------
-	void Wait::executeFunction(Command* command) {
+	void Wait::runFunction(Command* command) {
 		if (isFrameBased) {
 			startTime = ofGetFrameNum();
 		} else {

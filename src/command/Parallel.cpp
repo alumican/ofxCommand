@@ -36,7 +36,7 @@ namespace cmd {
 
 
 	//--------------------------------------------------------------
-	int Parallel::getCompleteCount() {
+	int Parallel::getCompleteCount() const {
 		return completeCount;
 	}
 
@@ -81,13 +81,13 @@ namespace cmd {
 
 
 	//--------------------------------------------------------------
-	void Parallel::executeFunction(Command* command) {
+	void Parallel::runFunction(Command* command) {
 		completeCount = 0;
 		if (getNumCommands() > 0) {
 			vector<Command*>* commands = &getCommands();
 			for (vector<Command*>::iterator it = commands->begin(); it!= commands->end(); ++it) {
 				ofAddListener((*it)->onComplete, this, &Parallel::currentCommandCompleteHandler);
-				(*it)->execute();
+				(*it)->run();
 			}
 		} else {
 			notifyComplete();

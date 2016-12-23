@@ -32,6 +32,14 @@ namespace cmd {
 		// ----------------------------------------
 
 	public:
+		Notify() {
+			this->event = NULL;
+		};
+
+		Notify(ofEvent<T>& event) {
+			this->event = &event;
+		};
+
 		Notify(ofEvent<T>& event, T argument) {
 			this->event = &event;
 			this->argument = argument;
@@ -42,7 +50,7 @@ namespace cmd {
 			ofLogVerbose() << "Bye Notify";
 		};
 
-		ofEvent<T>& getEvent() {
+		ofEvent<T>& getEvent() const {
 			return event;
 		};
 
@@ -50,16 +58,16 @@ namespace cmd {
 			this->event = event;
 		};
 
-		T getArgument() {
+		T getArgument() const {
 			return argument;
 		};
 
-		void getArgument(T argument) {
+		void setArgument(T argument) {
 			this->argument = argument;
 		};
 		
 	protected:
-		virtual void executeFunction(Command* command) {
+		virtual void runFunction(Command* command) {
 			ofNotifyEvent(*event, argument);
 			notifyComplete();
 		};

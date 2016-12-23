@@ -35,13 +35,13 @@ namespace cmd {
 		~Parallel();
 
 		virtual void insert(const vector<Command*>& commands);
-		int getCompleteCount();
+		int getCompleteCount() const;
 
 		virtual void _notifyBreak();
 		virtual void _notifyReturn();
 
 	protected:
-		virtual void executeFunction(Command* command);
+		virtual void runFunction(Command* command);
 		virtual void interruptFunction(Command* command);
 		virtual void resetFunction(Command* command);
 

@@ -81,7 +81,7 @@ namespace cmd {
 
 
 	//--------------------------------------------------------------
-	Command* CommandList::getCommand(int index) {
+	Command* CommandList::getCommand(int index) const {
 		return commands[index];
 	}
 
@@ -91,7 +91,7 @@ namespace cmd {
 	}
 
 	//--------------------------------------------------------------
-	int CommandList::getNumCommands() {
+	int CommandList::getNumCommands() const {
 		return commands.size();
 	}
 
@@ -107,7 +107,7 @@ namespace cmd {
 
 
 	//--------------------------------------------------------------
-	void CommandList::executeFunction(Command* command) {
+	void CommandList::runFunction(Command* command) {
 		notifyComplete();
 	}
 	

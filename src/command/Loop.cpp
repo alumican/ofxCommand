@@ -3,13 +3,18 @@
 namespace cmd {
 
 	//--------------------------------------------------------------
-	Loop::Loop(string name, Command* target, int loopCount) : Command(name) {
-		setup(target, loopCount);
+	Loop::Loop(string name, int loopCount, Command* target) : Command(name) {
+		setup(loopCount, target);
 	}
 
 	//--------------------------------------------------------------
-	Loop::Loop(Command* target, int loopCount) {
-		setup(target, loopCount);
+	Loop::Loop(int loopCount, Command* target) {
+		setup(loopCount, target);
+	}
+
+	//--------------------------------------------------------------
+	Loop::Loop(Command* target) {
+		setup(-1, target);
 	}
 
 	//--------------------------------------------------------------
@@ -25,9 +30,9 @@ namespace cmd {
 
 
 	//--------------------------------------------------------------
-	void Loop::setup(Command* target, int loopCount) {
-		this->target = target;
+	void Loop::setup(int loopCount, Command* target) {
 		this->loopCount = loopCount;
+		this->target = target;
 		currentCount = 0;
 	}
 
@@ -36,12 +41,12 @@ namespace cmd {
 
 
 	//--------------------------------------------------------------
-	int Loop::getCurrentCount() {
+	int Loop::getCurrentCount() const {
 		return currentCount;
 	}
 
 	//--------------------------------------------------------------
-	Command* Loop::getTarget() {
+	Command* Loop::getTarget() const {
 		return target;
 	}
 
@@ -51,7 +56,7 @@ namespace cmd {
 	}
 
 	//--------------------------------------------------------------
-	int Loop::getLoopCount() {
+	int Loop::getLoopCount() const {
 		return loopCount;
 	}
 
@@ -65,7 +70,7 @@ namespace cmd {
 
 
 	//--------------------------------------------------------------
-	void Loop::executeFunction(Command* command) {
+	void Loop::runFunction(Command* command) {
 		currentCount = 0;
 		if (target != NULL) {
 			ofAddListener(target->onComplete, this, &Loop::completeHandler);
@@ -105,7 +110,7 @@ namespace cmd {
 			if (currentCount > 0) {
 				target->reset();
 			}
-			target->execute();
+			target->run();
 		}
 	}
 

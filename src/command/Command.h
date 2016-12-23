@@ -5,8 +5,8 @@
 namespace cmd {
 
 	enum class CommandState : int {
-		SLEEPING     = 0,
-		EXECUTING    = 1,
+		SLEEPING = 0,
+		RUNNING = 1,
 		INTERRUPTING = 2,
 	};
 
@@ -51,17 +51,17 @@ namespace cmd {
 		Command(string name = "");
 		virtual ~Command();
 
-		void execute();
+		void run();
 		void interrupt();
 		void reset();
 
-		CommandState getState();
-		Command* getParent();
+		CommandState getState() const;
+		Command* getParent() const;
 
-		string getName();
+		string getName() const;
 		void setName(string name);
 
-		bool getDeleteOnComplete();
+		bool getDeleteOnComplete() const;
 		void setDeleteOnComplete(bool value);
 
 		void _setParent(Command* parent);
@@ -74,7 +74,7 @@ namespace cmd {
 		void notifyComplete();
 
 		// Override these
-		virtual void executeFunction(Command* command);
+		virtual void runFunction(Command* command);
 		virtual void interruptFunction(Command* command);
 		virtual void resetFunction(Command* command);
 

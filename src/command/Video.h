@@ -35,17 +35,17 @@ namespace cmd {
 		Video(ofVideoPlayer* videoPlayer = NULL, bool waitForComplete = false, bool closeOnComplete = false);
 		~Video();
 
-		ofVideoPlayer* getVideoPlayer();
+		ofVideoPlayer* getVideoPlayer() const;
 		void setVideoPlayer(ofVideoPlayer* videoPlayer);
 
-		bool getWaitForComplete();
+		bool getWaitForComplete() const;
 		void setWaitForComplete(bool value);
 
-		bool getCloseOnComplete();
+		bool getCloseOnComplete() const;
 		void setCloseOnComplete(bool value);
 
 	protected:
-		virtual void executeFunction(Command* command);
+		virtual void runFunction(Command* command);
 		virtual void interruptFunction(Command* command);
 		virtual void resetFunction(Command* command);
 

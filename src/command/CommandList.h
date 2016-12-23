@@ -41,14 +41,14 @@ namespace cmd {
 		void insert(Command* command);
 		virtual void insert(const vector<Command*>& commands);
 
-		Command* getCommand(int index);
+		Command* getCommand(int index) const;
 		vector<Command*>& getCommands();
-		int getNumCommands();
+		int getNumCommands() const;
 
 	protected:
 		void setParentToCommands(const vector<Command*>& commands);
 
-		virtual void executeFunction(Command* command);
+		virtual void runFunction(Command* command);
 		virtual void interruptFunction(Command* command);
 		virtual void resetFunction(Command* command);
 

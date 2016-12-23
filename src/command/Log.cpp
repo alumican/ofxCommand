@@ -18,7 +18,7 @@ namespace cmd {
 
 
 	//--------------------------------------------------------------
-	const string& Log::getMessage() {
+	const string& Log::getMessage() const {
 		return message;
 	}
 
@@ -28,7 +28,7 @@ namespace cmd {
 	}
 
 	//--------------------------------------------------------------
-	ofLogLevel Log::getLevel() {
+	ofLogLevel Log::getLevel() const {
 		return level;
 	}
 
@@ -42,7 +42,7 @@ namespace cmd {
 
 
 	//--------------------------------------------------------------
-	void Log::executeFunction(Command* command) {
+	void Log::runFunction(Command* command) {
 		ofLog(level) << message;
 		notifyComplete();
 	}

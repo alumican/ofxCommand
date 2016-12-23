@@ -36,7 +36,7 @@ namespace cmd {
 
 
 	//--------------------------------------------------------------
-	int Serial::getPosition() {
+	int Serial::getPosition() const {
 		return position;
 	}
 
@@ -48,7 +48,7 @@ namespace cmd {
 	void Serial::next() {
 		currentCommand = getCommand(position);
 		ofAddListener(currentCommand->onComplete, this, &Serial::currentCommandCompleteHandler);
-		currentCommand->execute();
+		currentCommand->run();
 	}
 
 
@@ -72,7 +72,7 @@ namespace cmd {
 
 	//--------------------------------------------------------------
 	void Serial::_notifyBreak() {
-		if (currentCommand != NULL && currentCommand->getState() == CommandState::EXECUTING) {
+		if (currentCommand != NULL && currentCommand->getState() == CommandState::RUNNING) {
 			ofRemoveListener(currentCommand->onComplete, this, &Serial::currentCommandCompleteHandler);
 			currentCommand->interrupt();
 		}
@@ -81,7 +81,7 @@ namespace cmd {
 
 	//--------------------------------------------------------------
 	void Serial::_notifyReturn() {
-		if (currentCommand != NULL && currentCommand->getState() == CommandState::EXECUTING) {
+		if (currentCommand != NULL && currentCommand->getState() == CommandState::RUNNING) {
 			ofRemoveListener(currentCommand->onComplete, this, &Serial::currentCommandCompleteHandler);
 			currentCommand->interrupt();
 		}
@@ -93,7 +93,7 @@ namespace cmd {
 
 
 	//--------------------------------------------------------------
-	void Serial::executeFunction(Command* command) {
+	void Serial::runFunction(Command* command) {
 		position = 0;
 		if (getNumCommands() > 0) {
 			next();

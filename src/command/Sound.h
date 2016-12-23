@@ -36,17 +36,17 @@ namespace cmd {
 		Sound(ofSoundPlayer* soundPlayer = NULL, bool waitForComplete = false, bool unloadOnComplete = false);
 		~Sound();
 
-		ofSoundPlayer* getSoundPlayer();
+		ofSoundPlayer* getSoundPlayer() const;
 		void setSoundPlayer(ofSoundPlayer* soundPlayer);
 
-		bool getWaitForComplete();
+		bool getWaitForComplete() const;
 		void setWaitForComplete(bool value);
 
-		bool getUnloadOnComplete();
+		bool getUnloadOnComplete() const;
 		void setUnloadOnComplete(bool value);
 
 	protected:
-		virtual void executeFunction(Command* command);
+		virtual void runFunction(Command* command);
 		virtual void interruptFunction(Command* command);
 		virtual void resetFunction(Command* command);
 
